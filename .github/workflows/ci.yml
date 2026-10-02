@@ -1,0 +1,13 @@
+name: CI Smoke Test
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Docker
+        run: docker build -t notes-app:test.
+      - name: Run Container
+        run: docker run -d -p 8080:80 --name test notes-app:test
+      - name: Smoke Test
+        run: sleep 5 && curl -f http://localhost:8080
